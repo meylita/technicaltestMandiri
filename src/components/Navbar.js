@@ -5,7 +5,7 @@ import Nav from 'react-bootstrap/Nav';
 export default function Navbar() {
   return (
       <Container>
-        <Nav variant="underline" defaultActiveKey="/home">
+        <Nav variant="underline" defaultActiveKey="/">
           <Nav.Item>
             <Nav.Link href="/">Home</Nav.Link>
           </Nav.Item>
