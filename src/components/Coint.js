@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 
 export default function Coint() {
     const { id } = useParams();
@@ -28,12 +28,22 @@ export default function Coint() {
 
 
         <div>
-            <p>ID: {coin.id}</p>
-            <p>Name: {coin.name}</p>
-            <p>Symbol: {coin.symbol}</p>
-            <p>Type: {coin.type}</p>
-            <p>Active: {coin.is_active ? 'Active' : 'Inactive'}</p>
-            <p>Is New: {coin.is_new ? 'True' : 'False'}</p>
+            <Container>
+                <Row>
+                    <Col>
+                        <Card>
+                            <Card.Body>  <p className='text-primary'>Coint Detail</p>
+                                <p>ID: {coin.id}</p>
+                                <p>Name: {coin.name}</p>
+                                <p>Symbol: {coin.symbol}</p>
+                                <p>Type: {coin.type}</p>
+                                <p>Active: {coin.is_active ? 'Active' : 'Inactive'}</p>
+                                <p>Is New: {coin.is_new ? 'True' : 'False'}</p>
+                                </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }

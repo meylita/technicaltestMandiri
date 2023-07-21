@@ -3,6 +3,7 @@ import Pagination from "react-bootstrap/Pagination";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Table from 'react-bootstrap/Table';
+import { Card, Col, Container, Row } from "react-bootstrap";
 
 export default function Home() {
     const [coins, setCoins] = useState([]);
@@ -13,6 +14,10 @@ export default function Home() {
 
     useEffect(() => {
 
+        if (!coins) {
+            return <div>Loading...</div>;
+        }
+
         const fetchCoins = async () => {
             const response = await axios.get(
                 'https://api.coinpaprika.com/v1/coins'
@@ -20,7 +25,7 @@ export default function Home() {
             setCoins(response.data);
         };
         fetchCoins();
-    },[]);
+    }, []);
 
     const indexOfLastCoin = currentPage * coinsPerPage;
     const indexOfFirstCoin = indexOfLastCoin - coinsPerPage;
@@ -90,12 +95,18 @@ export default function Home() {
         );
     });
 
-    
+
 
     return (
         <div className="App">
-            <div className="filter-container">
-                {/* <select
+
+            <Container>
+                <Row>
+                    <Col>
+                        <Card>
+                            <Card.Body>
+                                <div className="filter-container">
+                                    {/* <select
                     value={selectedOption}
                     onChange={(e) => setSelectedOption(e.target.value)}
                 >
@@ -103,51 +114,57 @@ export default function Home() {
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
                 </select> */}
-                <input
-                    type="text"
-                    placeholder="Search..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-            </div>
-            <Table striped bordered hover size="sm">
-                <thead>
-                    <tr>
-                        <th className="w-15rem">ID</th>
-                        <th>Name</th>
-                        <th>Symbol</th>
-                        <th>Rank</th>
-                        <th>Type</th>
-                        <th>Active</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currentCoins.map((coint) =>
-                        <tr key={coint.id}>
-                            <a href={`/coint/${coint.id}`} target="_blank">
-                                {coint.id}
-                            </a>
-                            <td>{coint.name}</td>
-                            <td>{coint.symbol}</td>
-                            <td>{coint.rank}</td>
-                            <td>{coint.type}</td>
-                            <td>{coint.is_active ? 'Active' : 'Inactive'}</td>
-                            <td>
-                                <button className="btn btn-danger" onClick={() => handleDelete(coint.id)}>Delete</button>
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </Table>
+                                    <input
+                                        type="text"
+                                        placeholder="Search..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                    />
+                                </div>
+                                <Table striped bordered hover size="sm">
+                                    <thead>
+                                        <tr>
+                                            <th className="w-15rem">ID</th>
+                                            <th>Name</th>
+                                            <th>Symbol</th>
+                                            <th>Rank</th>
+                                            <th>Type</th>
+                                            <th>Active</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {currentCoins.map((coint) =>
+                                            <tr key={coint.id}>
+                                                <a href={`/coint/${coint.id}`} target="_blank" title="click here to details">
+                                                    {coint.id}
+                                                </a>
+                                                <td>{coint.name}</td>
+                                                <td>{coint.symbol}</td>
+                                                <td>{coint.rank}</td>
+                                                <td>{coint.type}</td>
+                                                <td>{coint.is_active ? 'Active' : 'Inactive'}</td>
+                                                <td>
+                                                    <button className="btn btn-danger" onClick={() => handleDelete(coint.id)}>Delete</button>
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </Table>
 
-            <Pagination className="d-flex justify-content-end">
-                {getPageNumbers().map((number, index) => (
-                    <Pagination.Item key={index} active={number === currentPage} onClick={() => paginate(number)}>
-                        {number === ellipsis ? '...' : number}
-                    </Pagination.Item>
-                ))}
-            </Pagination>
+                                <Pagination className="d-flex justify-content-end">
+                                    {getPageNumbers().map((number, index) => (
+                                        <Pagination.Item key={index} active={number === currentPage} onClick={() => paginate(number)}>
+                                            {number === ellipsis ? '...' : number}
+                                        </Pagination.Item>
+                                    ))}
+                                </Pagination>
+
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     );
 }
